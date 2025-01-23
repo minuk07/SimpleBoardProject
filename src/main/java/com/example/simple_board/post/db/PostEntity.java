@@ -1,6 +1,8 @@
 package com.example.simple_board.post.db;
 
+import com.example.simple_board.board.db.BoardEntity;
 import com.example.simple_board.reply.db.ReplyEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +23,10 @@ public class PostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long boardId;
+    //private Long boardId;
+    @ManyToOne //BoardEntity가 N이고 상대방이 1 변수 뒤에다가 자동으로 _id를 붙임.
+    @JsonIgnore //무한반복에서 빠져나오기 위해 한쪽에서 연결을 끊음.
+    private BoardEntity board; //객체 지향으로 접근 => board_id
 
     private String userName;
 
