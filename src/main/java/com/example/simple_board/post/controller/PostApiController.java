@@ -1,13 +1,17 @@
 package com.example.simple_board.post.controller;
 
 import com.example.simple_board.board.model.BoardRequest;
+import com.example.simple_board.common.Api;
 import com.example.simple_board.post.db.PostEntity;
 import com.example.simple_board.post.model.PostRequest;
 import com.example.simple_board.post.model.PostViewRequest;
 import com.example.simple_board.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -36,10 +40,11 @@ public class PostApiController {
     }
 
     @GetMapping("/all")
-    public List<PostEntity> list(
-
+    public Api<List<PostEntity>> list(
+            @PageableDefault(page = 0, size = 10) //페이지 적용
+            Pageable pageable
     ){
-        return postService.all();
+        return postService.all(pageable);
     }
 
     @PostMapping("/delete") //비밀번호를 넣어야 하기 때문에 단순 deleteMapping으로 불가능.

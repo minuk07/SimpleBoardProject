@@ -3,6 +3,8 @@ package com.example.simple_board.board.db;
 import com.example.simple_board.post.db.PostEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OrderBy;
+import org.hibernate.annotations.Where;
 
 import java.util.List;
 
@@ -27,5 +29,7 @@ public class BoardEntity {
     @OneToMany(
             mappedBy = "board" //PostEntity에 board가 존재해야 함.
     )
+    @Where(clause = "status = 'REGISTERED'") //조건 달아주기 (status가 REGISTERED인 것들만)
+    @Builder.Default
     private List<PostEntity> postList = List.of();
 }

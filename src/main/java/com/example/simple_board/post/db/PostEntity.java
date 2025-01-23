@@ -43,7 +43,11 @@ public class PostEntity {
 
     private LocalDateTime postedAt;
 
-    @Transient //데이터베이스의 컬럼으로 사용하지 않겠다.
+    //@Transient //데이터베이스의 컬럼으로 사용하지 않겠다.
+    @OneToMany( //자동으로 replyList를 가져오도록 설정
+            mappedBy = "post"
+    )
+    @Builder.Default
     private List<ReplyEntity> replyList = List.of(); //빈 리스트가 디폴트
 
 }
