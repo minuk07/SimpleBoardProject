@@ -37,7 +37,7 @@ public class PostService {
     //2.비밀번호가 맞는지 확인
     public PostEntity view(@Valid PostViewRequest postViewRequest) {
 
-        return postRepository.findById(postViewRequest.getPostId())
+        return postRepository.findFirstByIdAndStatusOrderByIdDesc(postViewRequest.getPostId(), "REGISTERED") //등록된 것만 select
                 //postViewRequest 객체의 postId를 가져와 postRepository를 통해 데이터베이스에서 해당 id에 해당하는 게시글을 조회
                 .map( it -> {
                     //해당 Entity가 존재할 때
