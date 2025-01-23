@@ -4,6 +4,7 @@ import com.example.simple_board.post.db.PostEntity;
 import com.example.simple_board.post.db.PostRepository;
 import com.example.simple_board.post.model.PostRequest;
 import com.example.simple_board.post.model.PostViewRequest;
+import com.example.simple_board.reply.service.ReplyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository; //service느 controller와 repository(db)와 중간 계층 담당.
+
+    private final ReplyService replyService;
+
     public PostEntity create(
             PostRequest postRequest
     ){
@@ -45,6 +49,11 @@ public class PostService {
                         var format = "패스워드가 맞지 않습니다 %s vs %s";
                         throw new RuntimeException(String.format(format, it.getPassword(), postViewRequest.getPassword()));
                     }
+
+                    //답변글도 같이 게시
+                    var replyList = replyService.findAllByPostId(it.getId()); //postId에 해당하는 답변글들 리스트로 반환
+                    it.setReplyList(replyList);
+
                     return it; //비밀번호가 일치하면 해당 Entity 리턴
                 }).orElseThrow( //Optional에 값이 비어 있는 경우(findById 결과가 비어있는 경우)
                         () -> {
